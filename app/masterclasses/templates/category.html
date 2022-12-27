@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Categories
+{% endblock title %}
+
+{% block content %}
+    <section class="cards d-flex gap-2">
+
+        {% for category in categories %}
+            <div class="card" style="width: 18rem">
+                <div class="card-body">
+                    <h5 class="card-title">{{ category.name }}</h5>
+                    <a href="{% url 'index' %}?category={{ category.name }}"
+                       class="btn btn-primary">
+                        Open
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+
+    </section>
+{% endblock content %}

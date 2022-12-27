@@ -1,0 +1,46 @@
+{% extends "base.html" %} {% block title %} Masterclass | {{ masterclass.name }}
+{% endblock title %} {% block content %}
+<section class="masterclass d-flex gap-2 flex-column">
+    <h1>{{ masterclass.name }}</h1>
+    {% for category in masterclass.category.all %}
+    <div class="category">{{ category }}</div>
+    {% endfor %}
+    <textarea class="form-control" readonly>
+{{ masterclass.description }}</textarea
+    >
+    <input
+        class="form-control"
+        type="text"
+        readonly
+        value="{{ masterclass.date }}"
+    />
+    <textarea class="form-control" readonly>
+{{ masterclass.location }}</textarea
+    >
+    <input
+        class="form-control"
+        type="number"
+        readonly
+        value="{{ masterclass.student_age }}"
+    />
+    <input
+        class="form-control"
+        type="number"
+        readonly
+        value="{{ masterclass.students_amount }}"
+    />
+    <h2>Students</h2>
+    <ul class="list-group">
+        {% for student in masterclass.students.all %}
+        <li class="list-group-item" class="student">{{ student }}</li>
+        {% endfor %}
+    </ul>
+    <h2>Join to Masterclass</h2>
+    <form method="post">
+        {% csrf_token %} {{ form.as_p }}
+        <button class="btn btn-primary masterclass__button" type="submit">
+            Join
+        </button>
+    </form>
+</section>
+{% endblock content %}

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+{# Load the tag library #}
+
+{% load static %}
+{% load django_bootstrap5 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+<html lang="en">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>
+
+            {% block title %}
+            {% endblock title %}
+
+        </title>
+        <link rel="stylesheet" href="{% static 'pages/base.css' %}"/>
+    </head>
+    <body>
+
+        {% include "header.html" %}
+
+        {% block header %}
+        {% endblock header %}
+
+        <main class="main">
+
+            {% block content %}
+            {% endblock content %}
+
+        </main>
+    </body>
+</html>
