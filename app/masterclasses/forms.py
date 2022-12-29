@@ -39,6 +39,7 @@ class MasterclassCreateForm(ModelForm):
         fields = (
             Masterclass.cover.field.name,
             Masterclass.name.field.name,
+            Masterclass.price.field.name,
             Masterclass.description.field.name,
             Masterclass.location.field.name,
             Masterclass.category.field.name,

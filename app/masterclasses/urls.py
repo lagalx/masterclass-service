@@ -3,8 +3,9 @@ from django.urls import path
 from masterclasses import views
 
 urlpatterns = [
+    path("", views.home, name="home"),
     path(
-        "",
+        "masterclasses/",
         views.index,
         name="index",
     ),

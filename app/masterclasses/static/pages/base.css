@@ -7,5 +7,7 @@
 @import url("../blocks/header/header__link.css");
 
 /* main */
-
 @import url("../blocks/main/main.css");
+
+/* hero */
+@import url("../blocks/hero/hero.css");

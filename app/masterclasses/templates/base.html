@@ -20,6 +20,8 @@
             {% endblock title %}
 
         </title>
+        <link rel="shortcut icon" type="image/ico" href="{% static 'favicon.ico' %}"/>
+
         {# Include FontAwesome; required for icon display #}
         <link rel="stylesheet"
               href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css"/>
@@ -44,5 +46,11 @@
             {% endblock content %}
 
         </main>
+
+
+        {% include "footer.html" %}
+        {% block footer %}
+        {% endblock footer %}
+
     </body>
 </html>

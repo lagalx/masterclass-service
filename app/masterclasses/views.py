@@ -123,3 +123,9 @@ def category_view(request: HttpRequest) -> HttpResponse:
     categories = Category.objects.all()
     context.update(categories=categories)
     return render(request, "category.html", context=context)
+
+
+def home(request: HttpRequest) -> HttpResponse:
+    context = {}
+
+    return render(request, "home.html", context=context)

@@ -7,7 +7,7 @@
 {% endblock title %}
 
 {% block content %}
-    <section class="masterclass d-flex gap-2 flex-column">
+    <section class="masterclass d-flex gap-2 flex-column container py-5">
         <h1>{{ masterclass.name }}</h1>
         <div>
             Creator : <a href="{% url 'profi' masterclass.profi.username %}">{{ masterclass.profi }}</a>
@@ -32,6 +32,10 @@
                type="number"
                readonly
                value="{{ masterclass.student_age }}"/>
+               <input class="form-control"
+               type="number"
+               readonly
+               value="{{ masterclass.price }}"/>
         <input class="form-control"
                type="number"
                readonly

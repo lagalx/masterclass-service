@@ -68,6 +68,7 @@ class Masterclass(models.Model):
     )
     students = models.ManyToManyField(Student, blank=True)
     private_students = models.ManyToManyField(PrivateStudent, blank=True)
+    price = models.IntegerField(validators=[MinValueValidator(0)])
     category = models.ManyToManyField(Category)
     mc_type = models.ForeignKey(MasterclassType, on_delete=models.CASCADE)
 
