@@ -7,7 +7,7 @@ from django.core.validators import (
 )
 from django.db import models
 
-
+MASTERCLASS_DATE = models.DateField()
 # Create your models here.
 class Profi(AbstractUser):
     tel = models.CharField(max_length=12, null=True, blank=True)
@@ -37,12 +37,19 @@ class MasterclassType(models.Model):
         return self.description
 
 
+class PrivateStudent(models.Model):
+    name = models.CharField(max_length=32)
+    email = models.CharField(max_length=64)
+    masterclass_date = MASTERCLASS_DATE
+
+
 class Masterclass(models.Model):
     MIN_STUDENT_AMOUNT = 1
     MAX_STUDENT_AMOUNT = 100
     MIN_DESCRIPTION_LENGTH = 12
 
     name = models.CharField(max_length=32)
+    cover = models.ImageField(null=True, blank=True, upload_to="covers")
     description = models.TextField(
         max_length=120,
         validators=[MinLengthValidator(MIN_DESCRIPTION_LENGTH)],
@@ -59,7 +66,8 @@ class Masterclass(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
     )
-    students = models.ManyToManyField(Student)
+    students = models.ManyToManyField(Student, blank=True)
+    private_students = models.ManyToManyField(PrivateStudent, blank=True)
     category = models.ManyToManyField(Category)
     mc_type = models.ForeignKey(MasterclassType, on_delete=models.CASCADE)
 

@@ -4,12 +4,25 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
-from masterclasses.forms import MasterclassCreateForm, ProfiCreationForm, StudentForm
-from masterclasses.models import Category, Masterclass, Profi, Student
+from masterclasses.forms import (
+    MasterclassCreateForm,
+    ProfiCreationForm,
+    StudentForm,
+    StudentFormPrivate,
+)
+from masterclasses.models import (
+    Category,
+    Masterclass,
+    MasterclassDate,
+    MasterclassType,
+    Profi,
+    Student,
+)
 
 SEARCH_KEY = "search"
 CATEGORY_KEY = "category"
-
+MC_PUBLIC = MasterclassType.objects.get(name="public")
+MC_PRIVATE = MasterclassType.objects.get(name="private")
 
 # Create your views here.
 class SignupView(CreateView):
@@ -48,21 +61,42 @@ def profi(request: HttpRequest, profi_login: str) -> HttpResponse:
 def masterclass_view(request: HttpRequest, masterclass_id: int) -> HttpResponse:
     context = {}
     mc = Masterclass.objects.get(id=masterclass_id)
+    date = None
 
+    if mc.mc_type == MC_PUBLIC:
+        date = MasterclassDate.objects.get(masterclass=mc).date
+    else:
+        date = [d.date for d in MasterclassDate.objects.filter(masterclass=mc).all()]
     if request.method == "POST":
-        form = StudentForm(request.POST)
+        form = None
+        if mc.mc_type == MC_PUBLIC:
+            form = StudentForm(request.POST)
+        else:
+            form = StudentFormPrivate(request.POST, enabled_dates=date)
+
         if form.is_valid():
-            check_student = mc.students.filter(name=form.instance.name).first()
+            if mc.mc_type == MC_PUBLIC:
+                check_student = mc.students.filter(name=form.instance.name).first()
+            else:
+                form.instance.masterclass_date = form.cleaned_data["masterclass_date"]
+                check_student = mc.private_students.filter(
+                    name=form.instance.name,
+                    masterclass_date=form.instance.masterclass_date,
+                )
             if not check_student:
                 student = form.save()
-                mc.students.add(student)
         return redirect(
             "masterclass_view",
             masterclass_id=masterclass_id,
         )
     else:
-        form = StudentForm()
-    context.update(masterclass=mc, form=form)
+
+        if mc.mc_type == MC_PUBLIC:
+            form = StudentForm()
+        else:
+            form = StudentFormPrivate(enabled_dates=date)
+
+    context.update(masterclass=mc, form=form, date=date)
     return render(request, "masterclass/view.html", context=context)
 
 
@@ -72,7 +106,12 @@ def masterclass_create(request: HttpRequest) -> HttpResponse:
         form = MasterclassCreateForm(request.POST)
         if form.is_valid():
             form.instance.profi = request.user
-            masterclass = form.save()
+            date = form.cleaned_data["date"]
+            mc_type = form.cleaned_data["mc_type"]
+            masterclass = form.save(commit=False)
+            masterclass.mc_type = mc_type
+            form.save()
+            MasterclassDate.objects.create(masterclass=masterclass, date=date)
             return redirect("index")
     else:
         form = MasterclassCreateForm()

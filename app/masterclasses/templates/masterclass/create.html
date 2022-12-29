@@ -7,7 +7,7 @@
 {% endblock title %}
 
 {% block content %}
-    <form class="form" method="post">
+    <form class="form" method="post" action="{% url 'masterclass_create' %}"" enctype="multipart/form-data">
         {% csrf_token %}
         {% bootstrap_form form %}
         {% bootstrap_button button_type="submit" content="Save" %}

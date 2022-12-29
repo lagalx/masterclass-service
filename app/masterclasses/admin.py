@@ -4,6 +4,7 @@ from masterclasses.models import (
     Masterclass,
     MasterclassDate,
     MasterclassType,
+    PrivateStudent,
     Profi,
     Student,
 )
@@ -11,6 +12,7 @@ from masterclasses.models import (
 # Register your models here.
 admin.site.register(Profi)
 admin.site.register(Student)
+admin.site.register(PrivateStudent)
 admin.site.register(Masterclass)
 admin.site.register(Category)
 admin.site.register(MasterclassDate)

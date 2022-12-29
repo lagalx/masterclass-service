@@ -20,14 +20,22 @@
         </div>
     </form>
     <section class="cards d-flex gap-2">
+
         {% for mc in masterclasses %}
             <div class="card" style="width: 18rem">
+
+                {% if mc.cover %}
+                    <img class="card-img-top" src="{{ mc.cover.url }}" alt="Card image cap"/>
+                {% endif %}
+
                 <div class="card-body">
                     <h5 class="card-title">{{ mc.name }}</h5>
                     <div>
+
                         {% for category in mc.category.all %}
                             <span>#{{ category }}</span> |
                         {% endfor %}
+
                     </div>
                     <p class="card-text">{{ mc.description }}</p>
                     <a href="{% url 'masterclass_view' mc.id %}" class="btn btn-primary">
@@ -36,5 +44,6 @@
                 </div>
             </div>
         {% endfor %}
+
     </section>
 {% endblock content %}
