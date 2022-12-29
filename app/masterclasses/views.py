@@ -57,12 +57,10 @@ def profi(request: HttpRequest, profi_login: str) -> HttpResponse:
     return render(request, "profi.html", context=context)
 
 
-@login_required
 def masterclass_view(request: HttpRequest, masterclass_id: int) -> HttpResponse:
     context = {}
     mc = Masterclass.objects.get(id=masterclass_id)
     date = None
-
     if mc.mc_type == MC_PUBLIC:
         date = MasterclassDate.objects.get(masterclass=mc).date
     else:
@@ -100,10 +98,11 @@ def masterclass_view(request: HttpRequest, masterclass_id: int) -> HttpResponse:
     return render(request, "masterclass/view.html", context=context)
 
 
+@login_required
 def masterclass_create(request: HttpRequest) -> HttpResponse:
     context = {}
     if request.method == "POST":
-        form = MasterclassCreateForm(request.POST)
+        form = MasterclassCreateForm(request.POST, request.FILES)
         if form.is_valid():
             form.instance.profi = request.user
             date = form.cleaned_data["date"]

@@ -9,6 +9,9 @@
 {% block content %}
     <section class="masterclass d-flex gap-2 flex-column">
         <h1>{{ masterclass.name }}</h1>
+        <div>
+            Creator : <a href="{% url 'profi' masterclass.profi.username %}">{{ masterclass.profi }}</a>
+        </div>
 
         {% for category in masterclass.category.all %}
             <div class="category">{{ category }}</div>
